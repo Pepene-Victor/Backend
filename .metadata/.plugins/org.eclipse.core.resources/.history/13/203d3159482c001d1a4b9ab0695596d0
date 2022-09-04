@@ -1,0 +1,68 @@
+package com.kronsoft.project.entities;
+
+import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "stocks")
+public class Stock {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "stock_id")
+	private Long id;
+	
+	@Column(name = "")
+	private Long quantity;
+	
+	@Column(name = "id",scale = 2)
+	private BigDecimal price;
+	
+	@OneToOne(optional = false)
+	//@JoinColumn(name = "product_pzn", referencedColumnName = "pzn")
+	@Column(name = "product_pzn")
+	private Product product;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Long quantity) {
+		this.quantity = quantity;
+	}
+
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+	
+	
+	
+}

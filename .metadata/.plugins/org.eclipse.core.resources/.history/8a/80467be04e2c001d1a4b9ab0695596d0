@@ -1,0 +1,10 @@
+package com.kronsoft.project;
+
+
+public class ProductsData {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ProductsData.class, args);
+	}
+	
+}

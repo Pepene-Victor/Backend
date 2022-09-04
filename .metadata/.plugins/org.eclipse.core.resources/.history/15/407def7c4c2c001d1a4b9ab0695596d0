@@ -1,0 +1,5 @@
+package com.kronsoft.project.dao;
+
+public interface StockRepository {
+
+}

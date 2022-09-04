@@ -1,0 +1,5 @@
+package com.kronsoft.project.entities;
+
+public class User {
+
+}
