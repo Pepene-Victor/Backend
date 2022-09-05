@@ -1,0 +1,5 @@
+package com.kronsoft.project.service;
+
+public class ProductService {
+
+}

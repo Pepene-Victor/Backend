@@ -32,7 +32,6 @@ public class Stock {
 	
 	
 	@OneToOne(optional = false)
-	@NotNull
 	@JoinColumn(name = "product_pzn", referencedColumnName = "pzn")
 	private Product product;
 

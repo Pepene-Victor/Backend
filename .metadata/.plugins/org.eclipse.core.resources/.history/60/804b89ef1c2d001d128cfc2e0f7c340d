@@ -1,0 +1,34 @@
+package com.kronsoft.project.service;
+
+
+@Service
+public class ProductService {
+
+	private static Logger logger = LoggerFactory.getLogger(ProductService.class);
+	
+	@Autowired
+	private ProductRepository productRepository;
+	
+	
+	@PostConstruct
+	private void populateProductList() {
+		
+		try {
+			if(productRepository.count() == 0) {
+				
+				Resource resource = new ClassPathResource("products.csv");
+				CsvSchema schema = CsvSchema.emptySchema().withHeader();
+				CsvMapper mapper = new CsvMapper();
+				MappingIterator<Product> iterator = mapper.readerFor(Product.class).with(schema)
+						.readValues(resource.getInputStream());
+				List<Product> products = productRepository.saveAll(iterator.readAll());
+				System.out.println(products);
+			}
+			
+		} catch(IOException e){
+			
+			logger.error("An error occurred while populating products.", e);
+		}
+		
+	}
+}
