@@ -1,0 +1,5 @@
+package com.kronsoft.project.config.authentication;
+
+public class UserAuthneticationFailureHandler {
+
+}

@@ -34,10 +34,9 @@ public class User {
 	
 	@Column(name = "password")
 	@NotEmpty
-	@Size(min = 8, max = 20, message = "Password must be between 8 and 20 characters long")
+	@Size(min = 8, message = "Password must be 8 or more characters long")
 	private String password;
 	
-	@NotNull
 	@Column(name = "creation_date")
 	private LocalDateTime creationDate;
 

@@ -1,0 +1,17 @@
+package com.kronsoft.project.controllers;
+
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class UserController {
+
+	@Autowired
+	private AccountService accountService;
+	
+	@PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Account registerAccount(@Valid @RequestBody Account account) throws AccountAlreadyExistException {
+		logger.info("[REST] POST to /account/register");
+		return accountService.registerAccount(account);
+	}
+	
+}

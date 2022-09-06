@@ -1,0 +1,5 @@
+package com.kronsoft.project.config;
+
+public class SecurityConfig {
+
+}

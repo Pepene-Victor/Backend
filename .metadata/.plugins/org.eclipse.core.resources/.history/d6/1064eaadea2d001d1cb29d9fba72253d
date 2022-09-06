@@ -1,0 +1,53 @@
+package com.kronsoft.project.service;
+
+import java.time.LocalDateTime;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.kronsoft.project.dao.UserRepository;
+import com.kronsoft.project.entities.User;
+import com.kronsoft.project.exceptions.UserExistsByEmailException;
+
+@Service
+public class UserService {
+
+	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	public User createUser(User user) {
+		
+		user.setCreationDate(LocalDateTime.now());
+		
+		final String email = user.getEmail();
+		
+		if (userRepository.existsByEmail(email)) {
+			throw new UserExistsByEmailException(email);
+		}
+		
+		logger.info("Create account with email: ", email);
+		
+		String rawPassword = user.getPassword();
+		
+		user.setPassword(passwordEncoder.encode(rawPassword));
+		
+		return accountRepository.save(account);
+		
+		
+	}
+
+	public User updateUserDetails(User user) {
+		
+		return null;
+	}
+	
+}

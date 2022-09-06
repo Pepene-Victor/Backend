@@ -1,0 +1,5 @@
+package com.kronsoft.project.exceptions;
+
+public class UserExistsByUsernameException {
+
+}

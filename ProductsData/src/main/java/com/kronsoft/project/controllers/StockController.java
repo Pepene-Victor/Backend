@@ -1,7 +1,6 @@
 package com.kronsoft.project.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kronsoft.project.entities.Product;
 import com.kronsoft.project.entities.Stock;
-import com.kronsoft.project.service.ProductService;
 import com.kronsoft.project.service.StockService;
 
 @RestController
@@ -24,9 +21,6 @@ public class StockController {
 
 	@Autowired
 	private StockService stockService;
-	
-	@Autowired 
-	private ProductService productService;
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<Stock> getAllStocks(){
@@ -57,11 +51,7 @@ public class StockController {
 	@PostMapping(value = "/create/productId", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Stock createStock(@RequestBody Stock stock, @RequestParam String productId) {
 		
-		Optional<Product> product = productService.getProductById(productId);
-		
-		stock.setProduct(product.get());
-		
-		return stockService.saveStock(stock);
+		return stockService.createStockByProductId(stock, productId);
 	}
 	
 	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
