@@ -1,5 +1,0 @@
-package com.kronsoft.project.config.authentication;
-
-public class CustomUserDetailsService {
-
-}

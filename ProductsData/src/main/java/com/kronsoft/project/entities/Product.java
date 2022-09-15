@@ -48,6 +48,7 @@ public class Product {
 	
 	@OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE)
 	private Stock stock;
+	
 
 	public String getPzn() {
 		return pzn;
@@ -97,10 +98,12 @@ public class Product {
 		this.unit = unit;
 	}
 
+	
+
 	@Override
 	public String toString() {
 		return "Product [pzn=" + pzn + ", supplier=" + supplier + ", productName=" + productName + ", strength="
-				+ strength + ", packageSize=" + packageSize + ", unit=" + unit + "]";
+				+ strength + ", packageSize=" + packageSize + ", unit=" + unit + ", stock=" + stock + "]";
 	}
 
 	@Override

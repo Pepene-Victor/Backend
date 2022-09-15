@@ -13,6 +13,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -34,10 +37,11 @@ public class User {
 	
 	@Column(name = "password")
 	@NotEmpty
-	@Size(min = 8, message = "Password must be 8 or more characters long")
+	//@PasswordConstraint
 	private String password;
 	
 	@Column(name = "creation_date")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = Shape.STRING)
 	private LocalDateTime creationDate;
 
 	public Long getId() {

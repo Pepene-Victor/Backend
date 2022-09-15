@@ -2,12 +2,12 @@ package com.kronsoft.project.service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
-import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -17,9 +17,12 @@ import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.kronsoft.project.dao.ProductRepository;
+import com.kronsoft.project.dto.ProductDto;
 import com.kronsoft.project.entities.Product;
+import com.kronsoft.project.exceptions.ProductIdNotExistException;
 
 @Service
+@Transactional
 public class ProductService {
 
 	private static Logger logger = LoggerFactory.getLogger(ProductService.class);
@@ -27,9 +30,7 @@ public class ProductService {
 	@Autowired
 	private ProductRepository productRepository;
 	
-	
-	@PostConstruct
-	private void populateProductList() {
+	public void populateProductTable() {
 		
 		try {
 			if(productRepository.count() == 0) {
@@ -52,33 +53,56 @@ public class ProductService {
 		
 	}
 	
-	public List<Product> getAllProducts() {
+	public List<ProductDto> getAllProductsDto() {
 		
-		return productRepository.findAll();
-		
-	}
-	
-	public Optional<Product> getProductById(String id) {
-		
-		return productRepository.findById(id);
+		return productRepository.findAll().stream() 
+				.map(this::convertToProductDto).toList();
 		
 	}
 	
-	public List<Product> getProductByName(String productName) {
+	public ProductDto getProductDtoById(String id) {
 		
-		return productRepository.findByProductName(productName);
-		
-	}
-	
-	public Product saveProduct(Product product) {
-		
-		return productRepository.save(product);
+		return convertToProductDto(productRepository.findById(id).get());
 		
 	}
 	
-	public void deleteProductById(String id) {
+	public List<ProductDto> getProductDtoByName(String productName) {
 		
+		return productRepository.findByProductName(productName).stream() 
+				.map(this::convertToProductDto).toList();
+		
+	}
+	
+	public ProductDto saveProductDto(ProductDto productDto) {
+		
+		Product product = convertToProduct(productDto);
+		
+		return convertToProductDto(productRepository.save(product));
+		
+	}
+	
+	public void deleteProductById(String id) throws ProductIdNotExistException {
+		
+		if(productRepository.existsById(id) == false)
+			throw new ProductIdNotExistException(id);
 		productRepository.deleteById(id);
 		
+	}
+	
+	private ProductDto convertToProductDto(Product product) {
+		
+		ProductDto productDto = new ProductDto();
+		BeanUtils.copyProperties(product, productDto);
+		
+		return productDto;
+	}
+
+	private Product convertToProduct(ProductDto productDto) {
+		
+		Product product = new Product();
+		
+		BeanUtils.copyProperties(productDto, product);
+		
+		return product;
 	}
 }

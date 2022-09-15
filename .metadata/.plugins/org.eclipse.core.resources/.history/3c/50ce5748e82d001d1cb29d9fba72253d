@@ -1,5 +1,0 @@
-package com.kronsoft.project.exceptions;
-
-public class UserExistsByEmailException {
-
-}

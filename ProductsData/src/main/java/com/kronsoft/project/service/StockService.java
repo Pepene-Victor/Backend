@@ -1,12 +1,16 @@
 package com.kronsoft.project.service;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
+import java.util.Random;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kronsoft.project.dao.ProductRepository;
 import com.kronsoft.project.dao.StockRepository;
+import com.kronsoft.project.dto.StockDto;
 import com.kronsoft.project.entities.Product;
 import com.kronsoft.project.entities.Stock;
 
@@ -17,42 +21,76 @@ public class StockService {
 	private StockRepository stockRepository;
 	
 	@Autowired 
-	private ProductService productService;
+	private ProductRepository productRepository;
 	
-	public List<Stock> getAllStocks(){
+	public void createStockForProduct() {
 		
-		return stockRepository.findAll();
-		
-	}
-	
-	public Stock saveStock(Stock stock) {
-		
-		return stockRepository.save(stock);
-		
-		
-	}
-	
-	public Stock createStockByProductId(Stock stock, String productId) {
-		
-		Optional<Product> product = productService.getProductById(productId);
-		
-		stock.setProduct(product.get());
-		
-		return stockRepository.save(stock);
-		
-		
-	}
-	
-	public List<Stock> getStockByProductName(String productName){
-		
-		return stockRepository.findByProductProductName(productName);
+		List<Product> products = productRepository.findAll();
+		if(stockRepository.count() == 0) {
+			
+			for(Product product: products) {
 				
+				Random r = new Random();
+				Stock stock = new Stock();
+				stock.setPrice(new BigDecimal(Math.random()));
+				Long quantity = r.nextLong();
+				if(quantity < 1)
+					quantity = quantity * (-1);
+				stock.setQuantity(quantity);
+				stock.setProduct(product);
+				stockRepository.save(stock);
+				
+			}
+			
+			System.out.println(stockRepository.findAll().stream() 
+					.map(this::convertToStockDto).toList());
+			
+		}
+	}
+
+	
+	public List<StockDto> getAllStocks(){
+		
+		return stockRepository.findAll().stream() 
+				.map(this::convertToStockDto).toList();
 	}
 	
-	public Stock getStockByProductId(String pzn){
+	public StockDto getStockByProductId(String pzn) {
 		
-		return stockRepository.findByProductPzn(pzn);
-				
+		return convertToStockDto(stockRepository.findByProductPzn(pzn));
+	}
+	
+	public StockDto createStockByProductId(StockDto stockDto, String productId) {
+		
+		Stock stock = convertToStock(stockDto);
+		productRepository.findById(productId).ifPresentOrElse(product ->
+		{stock.setProduct(product);},() -> new Exception("Product with pzn "+ productId +" not found " ));
+		;
+		return convertToStockDto(this.stockRepository.save(stock));
+	}
+	
+	public StockDto saveStock(StockDto stockDto) {
+		
+		Stock stock = convertToStock(stockDto);
+		
+		return convertToStockDto(this.stockRepository.save(stock));
+		
+	}
+
+	private StockDto convertToStockDto(Stock stock) {
+		
+		StockDto stockDto = new StockDto();
+		BeanUtils.copyProperties(stock, stockDto);
+		
+		return stockDto;
+	}
+
+	private Stock convertToStock(StockDto stockDto) {
+		
+		Stock stock = new Stock();
+		BeanUtils.copyProperties(stockDto, stock);
+		
+		return stock;
 	}
 	
 }
