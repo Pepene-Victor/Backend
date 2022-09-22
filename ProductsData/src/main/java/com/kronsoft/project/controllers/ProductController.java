@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kronsoft.project.dto.ProductDto;
+import com.kronsoft.project.exceptions.ProductExistsByIdException;
 import com.kronsoft.project.exceptions.ProductIdNotExistException;
 import com.kronsoft.project.service.ProductService;
 
@@ -36,23 +36,16 @@ public class ProductController {
 	}
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ProductDto getProductById(@PathVariable String id) {
+	public ProductDto getProductById(@PathVariable String id) throws ProductIdNotExistException {
 		
 		return productService.getProductDtoById(id);
 		
 	}
 	
-	@GetMapping(value = "/productName", produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<ProductDto> getProductByProductName(@RequestParam String productName) {
-		
-		return productService.getProductDtoByName(productName);
-		
-	}
-	
 	@PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ProductDto createProduct(@Valid @RequestBody ProductDto product) {
+	public ProductDto createProduct(@Valid @RequestBody ProductDto product) throws ProductExistsByIdException {
 		
-		return productService.saveProductDto(product);
+		return productService.createProductDto(product);
 		
 	}
 	

@@ -2,6 +2,8 @@ package com.kronsoft.project.service;
 
 import java.time.LocalDateTime;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import com.kronsoft.project.exceptions.UserExistsByEmailException;
 import com.kronsoft.project.exceptions.UserExistsByUsernameException;
 
 @Service
+@Transactional
 public class UserService {
 	
 	@Autowired
@@ -24,14 +27,12 @@ public class UserService {
 		
 		user.setCreationDate(LocalDateTime.now());
 		
-		final String email = user.getEmail();
-		final String username = user.getUsername();
-		if (userRepository.existsByEmail(email)) {
-			throw new UserExistsByEmailException(email);
+		if (userRepository.existsByEmail(user.getEmail())) {
+			throw new UserExistsByEmailException(user.getEmail());
 		}
 		
-		if (userRepository.existsByUsername(username)) {
-			throw new UserExistsByUsernameException(username);
+		else if (userRepository.existsByUsername(user.getUsername())) {
+			throw new UserExistsByUsernameException(user.getUsername());
 		}
 		
 		String password = user.getPassword();
@@ -42,15 +43,21 @@ public class UserService {
 		
 		
 	}
-
-	public User updateUserName(User user) throws UserExistsByUsernameException {
-			
-		final String username = user.getUsername();
+	public User getUserByUsername(String username) {
 		
-		if (userRepository.existsByUsername(username)) {
+		return userRepository.findByUsername(username).get();
+	}
+	
+	public User updateUserName(User user) throws Exception {
+		
+		String username = user.getUsername();
+		
+		if(username == null)
 			throw new UserExistsByUsernameException(username);
-		}
 		
+		else if (userRepository.existsByUsername(username))
+			throw new UserExistsByUsernameException(username);
+
 		return userRepository.save(user);
 		
 	}
@@ -65,9 +72,21 @@ public class UserService {
 		
 	}
 
-	public User getUserByUsername(String username) {
+	public User updateUserEmail(User user) throws UserExistsByEmailException {
 		
-		return userRepository.findByUsername(username).get();
+		String email = user.getEmail();
+
+		if (userRepository.existsByUsername(email)) 
+			throw new UserExistsByEmailException(email);
+		
+		return userRepository.save(user);
+		
 	}
+	
+	public void deleteUser(Long id) {
+		
+		userRepository.deleteById(id);
+	}
+	
 	
 }

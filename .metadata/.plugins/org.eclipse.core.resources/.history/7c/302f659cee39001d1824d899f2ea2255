@@ -1,0 +1,46 @@
+package com.kronsoft.project.test;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+
+import com.kronsoft.project.entities.User;
+import com.kronsoft.project.exceptions.UserExistsByEmailException;
+import com.kronsoft.project.exceptions.UserExistsByUsernameException;
+import com.kronsoft.project.service.UserService;
+
+@SpringBootTest
+@ContextConfiguration
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class UserServiceTest {
+	
+	public static final String USERNAME = "User188";
+	public static final String EMAIL = "ceva45@gmail.com";
+	public static final String PASSWORD = "victorA@2";
+	
+	@Autowired
+	private UserService userService;
+	
+	private User persistedUser;
+	
+	@BeforeAll
+	public void createUser() throws UserExistsByEmailException, UserExistsByUsernameException {
+		User user = new User();
+		user.setUsername(USERNAME);
+		user.setEmail(EMAIL);
+		user.setPassword(PASSWORD);
+		
+		persistedUser = userService.createUser(user);
+		Assertions.assertNotNull(persistedUser);
+	}
+	
+	@Test
+	public void editUser() {
+		
+	}
+	
+}

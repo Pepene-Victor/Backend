@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -27,22 +26,22 @@ public class Product {
 	private String supplier;
 	
 	@Column(name = "product_name", nullable = false)
-	@NotEmpty
+	@NotNull
 	@Size(max = 100)
 	private String productName;
 	
 	@Column(name = "strength", nullable = false)
-	@NotEmpty
+	@NotNull
 	@Size(max = 100)
 	private String strength;
 	
 	@Column(name = "package_size", nullable = false)
-	@NotEmpty
+	@NotNull
 	@Size(max = 20)
 	private String packageSize;
 	
 	@Column(name = "unit", nullable = false)
-	@NotEmpty
+	@NotNull
 	@Size(max = 2)
 	private String unit;
 	

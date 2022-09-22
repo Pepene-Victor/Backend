@@ -38,7 +38,7 @@ public class UserController {
 	}
 	
 	@PutMapping(value = "/update-account-username", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public User updateUserName(@RequestBody User user) throws UserExistsByUsernameException {
+	public User updateUserName(@RequestBody User user) throws Exception {
 		
 		return userService.updateUserName(user);
 		
@@ -50,5 +50,12 @@ public class UserController {
 		return userService.updateUserPassword(user);
 		
 	}
+	@PutMapping(value = "/update-account-email", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public User updateUserEmail(@RequestBody User user) throws UserExistsByEmailException {
+		
+		return userService.updateUserEmail(user);
+		
+	}
+	
 	
 }

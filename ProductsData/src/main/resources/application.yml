@@ -9,4 +9,8 @@ spring:
     properties:
       dialect: org.hibernate.dialect.PostgreSQL82Dialect
       format_sql: true
+      javax:
+        persistence:
+          validation:
+            mode: none
     open-in-view: false

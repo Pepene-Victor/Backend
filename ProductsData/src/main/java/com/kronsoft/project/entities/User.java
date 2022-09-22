@@ -10,11 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import com.kronsoft.project.validators.PasswordConstraint;
 
 @Entity
 @Table(name = "users")
@@ -25,19 +25,19 @@ public class User {
 	@Column(name = "id")
 	private Long id;
 	
-	@Column(name = "email", unique = true)
-	@NotNull
+	@Column(name = "email", unique = true, nullable = false)
+	@NotEmpty
 	private String email;
 	
-	@Column(name = "username", unique = true)
+	@Column(name = "username", unique = true, nullable = false)
 	@NotEmpty
 	@Size(min = 5, max = 50, message = "Username must be between 5 and 50 characters long")
 	private String username;
 	
 	
-	@Column(name = "password")
+	@Column(name = "password", nullable = false)
+	@PasswordConstraint
 	@NotEmpty
-	//@PasswordConstraint
 	private String password;
 	
 	@Column(name = "creation_date")

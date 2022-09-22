@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.kronsoft.project.exceptions.ProductExistsByIdException;
 import com.kronsoft.project.exceptions.ProductIdNotExistException;
 import com.kronsoft.project.exceptions.UserExistsByEmailException;
 import com.kronsoft.project.exceptions.UserExistsByUsernameException;
@@ -17,7 +18,7 @@ public class ControllerExceptionsHandler {
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<String> dataIntegrityException(DataIntegrityViolationException e) {
 		
-		return new ResponseEntity<>("Data integrity.... stuff", HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>("Data integrity violation", HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -46,7 +47,13 @@ public class ControllerExceptionsHandler {
 	}
 	
 	@ExceptionHandler(ProductIdNotExistException.class)
-	public ResponseEntity<String> userExistsByEmailException( ProductIdNotExistException e){
+	public ResponseEntity<String> productNotExistsByIdException( ProductIdNotExistException e){
+		
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@ExceptionHandler(ProductExistsByIdException.class)
+	public ResponseEntity<String> productExistsByIdException( ProductIdNotExistException e){
 		
 		return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}

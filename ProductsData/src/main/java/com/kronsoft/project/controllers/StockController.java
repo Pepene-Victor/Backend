@@ -44,7 +44,7 @@ public class StockController {
 	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public StockDto updateStock(@RequestBody StockDto stockDto) {
 		
-		return stockService.saveStock(stockDto);
+		return stockService.updateStockByProductId(stockDto);
 	}
 	
 	
