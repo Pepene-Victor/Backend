@@ -22,12 +22,12 @@ public class Stock {
 	@Column(name = "id")
 	private Long id;
 	
+	@Column(name = "quantity", nullable = false)
 	@NotNull
-	@Column(name = "quantity")
 	private Long quantity;
 	
+	@Column(name = "price", scale = 2, nullable = false)
 	@NotNull
-	@Column(name = "price", scale = 2)
 	private BigDecimal price;
 	
 	

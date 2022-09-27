@@ -24,7 +24,7 @@ public class UserServiceTest {
 	
 
 	public static final String USERNAME = "User188";
-	public static final String EMAIL = "ceva45@gmail.com";
+	public static final String EMAIL = "user45@gmail.com";
 	public static final String PASSWORD = "victorA@2";
 	
 	public static final String USERNAME_2 = "User2000";
@@ -73,20 +73,29 @@ public class UserServiceTest {
 		
 	}
 	
-//	@Test
-//	public void editUser() throws UserExistsByUsernameException, UserExistsByEmailException {
-//		persistedUser.setUsername(USERNAME_2);
-//		persistedUser.setEmail(EMAIL_2);
-//		persistedUser.setPassword(PASSWORD_2);
-//		persistedUser = userService.updateUser(persistedUser, id);
-//		updateUser();
-//		
-//		Assertions.assertEquals(USERNAME_2, persistedUser.getUsername());
-//		Assertions.assertEquals(EMAIL_2, persistedUser.getEmail());
-//		Assertions.assertTrue(passwordEncoder.matches(PASSWORD_2, persistedUser.getPassword()));
-//
-//
-//	}
+	@Test
+	public void updateUserNameTest() throws UserExistsByUsernameException {
+		persistedUser.setUsername(USERNAME_2);
+		persistedUser = userService.updateUserName(persistedUser);
+		Assertions.assertEquals(USERNAME_2, persistedUser.getUsername());
+		updateUser();
+	}
+	
+	@Test
+	public void updateUserPasswordTest() {
+		persistedUser.setPassword(PASSWORD_2);
+		persistedUser = userService.updateUserPassword(persistedUser);
+		Assertions.assertTrue(passwordEncoder.matches(PASSWORD_2, persistedUser.getPassword()));
+		updateUser();
+	}
+	
+	@Test
+	public void updateUserEmailTest() throws UserExistsByEmailException {
+		persistedUser.setEmail(EMAIL_2);
+		persistedUser = userService.updateUserEmail(persistedUser);
+		Assertions.assertEquals(EMAIL_2, persistedUser.getEmail());
+		updateUser();
+	}
 	
 	@AfterAll
 	public void deleteUserByIdTest() {

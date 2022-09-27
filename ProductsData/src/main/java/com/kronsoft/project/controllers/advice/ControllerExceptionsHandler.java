@@ -1,5 +1,8 @@
 package com.kronsoft.project.controllers.advice;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +38,7 @@ public class ControllerExceptionsHandler {
 	}
 	
 	@ExceptionHandler(UserExistsByUsernameException.class)
-	public ResponseEntity<String> UserExistsByUsernameException( UserExistsByUsernameException e){
+	public ResponseEntity<String> userExistsByUsernameException( UserExistsByUsernameException e){
 		
 		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
@@ -47,15 +50,21 @@ public class ControllerExceptionsHandler {
 	}
 	
 	@ExceptionHandler(ProductIdNotExistException.class)
-	public ResponseEntity<String> productNotExistsByIdException( ProductIdNotExistException e){
-		
-		return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<String> handle(ProductIdNotExistException e, 
+            HttpServletRequest request, HttpServletResponse response) {
+	    if (e instanceof ProductIdNotExistException) {
+	        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
+	    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
 	
 	@ExceptionHandler(ProductExistsByIdException.class)
-	public ResponseEntity<String> productExistsByIdException( ProductIdNotExistException e){
-		
-		return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+	public ResponseEntity<String> handle(ProductExistsByIdException e, 
+            HttpServletRequest request, HttpServletResponse response) {
+	    if (e instanceof ProductExistsByIdException) {
+	        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+	    }
+	    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
-	
 }
+

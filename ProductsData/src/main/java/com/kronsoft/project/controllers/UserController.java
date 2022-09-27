@@ -38,7 +38,7 @@ public class UserController {
 	}
 	
 	@PutMapping(value = "/update-account-username", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public User updateUserName(@RequestBody User user) throws Exception {
+	public User updateUserName(@RequestBody User user) throws UserExistsByUsernameException {
 		
 		return userService.updateUserName(user);
 		

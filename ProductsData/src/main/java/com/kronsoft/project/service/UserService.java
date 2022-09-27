@@ -48,14 +48,11 @@ public class UserService {
 		return userRepository.findByUsername(username).get();
 	}
 	
-	public User updateUserName(User user) throws Exception {
+	public User updateUserName(User user) throws UserExistsByUsernameException{
 		
 		String username = user.getUsername();
 		
-		if(username == null)
-			throw new UserExistsByUsernameException(username);
-		
-		else if (userRepository.existsByUsername(username))
+		if (userRepository.existsByUsername(username))
 			throw new UserExistsByUsernameException(username);
 
 		return userRepository.save(user);
@@ -76,7 +73,7 @@ public class UserService {
 		
 		String email = user.getEmail();
 
-		if (userRepository.existsByUsername(email)) 
+		if (userRepository.existsByEmail(email)) 
 			throw new UserExistsByEmailException(email);
 		
 		return userRepository.save(user);

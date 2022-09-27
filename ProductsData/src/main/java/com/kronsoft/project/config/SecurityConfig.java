@@ -1,6 +1,7 @@
 package com.kronsoft.project.config;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -72,7 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 						Authentication authentication) throws IOException, ServletException {
 					
-					System.out.println("Login Succes!");
+					System.out.println("User " + authentication.getName() + " has logged in: " + LocalDateTime.now());
 				}
 				
 			})
@@ -84,12 +85,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             public void onLogoutSuccess(HttpServletRequest request,
                         HttpServletResponse response, Authentication authentication)
                     throws IOException, ServletException {
-
-            	System.out.println("User has logged out.");
+				
+				System.out.println("User " + authentication.getName() + " has logged out: " + LocalDateTime.now());
 
             }
-        })
-			.deleteCookies("JSESSIONID")
+        }).deleteCookies("JSESSIONID")
 			.clearAuthentication(true)
 			.permitAll();
 		
