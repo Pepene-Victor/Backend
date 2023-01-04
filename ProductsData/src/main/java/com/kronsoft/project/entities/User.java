@@ -28,7 +28,6 @@ public class User {
 	
 	@Column(name = "email", unique = true, nullable = false)
 	@NotNull
-	@Email
 	private String email;
 	
 	@Column(name = "username", unique = true, nullable = false)

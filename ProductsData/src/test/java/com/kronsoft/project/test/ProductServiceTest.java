@@ -116,7 +116,7 @@ public class ProductServiceTest {
 			Assertions.assertEquals(persistedUnit, product.getUnit());
 		}
 		@Test
-		public void editProductTest() {
+		public void editProductTest() throws ProductIdNotExistException {
 			persistedProduct.setSupplier(SUPPLIER_2);
 			persistedProduct.setProductName(PRODUCT_NAME_2);
 			persistedProduct.setStrength(STRENGTH_2);

@@ -1,5 +1,0 @@
-package com.kronsoft.project.validators;
-
-public @interface EmailConstraint {
-
-}

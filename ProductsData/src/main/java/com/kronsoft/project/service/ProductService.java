@@ -82,17 +82,19 @@ public class ProductService {
 		
 	}
 	
-	public ProductDto saveProductDto(ProductDto productDto) {
-		
-		Product product = convertToProduct(productDto);
-		
-		return convertToProductDto(productRepository.save(product));
-		
+	public ProductDto saveProductDto(ProductDto productDto) throws ProductIdNotExistException {
+		if(!productRepository.existsById(productDto.getPzn()))
+			throw new ProductIdNotExistException(productDto.getPzn());
+		else {
+			Product product = convertToProduct(productDto);
+			
+			return convertToProductDto(productRepository.save(product));
+		}
 	}
 	
 	public void deleteProductById(String id) throws ProductIdNotExistException {
 		
-		if(productRepository.existsById(id) == false)
+		if(!productRepository.existsById(id))
 			throw new ProductIdNotExistException(id);
 		productRepository.deleteById(id);
 		

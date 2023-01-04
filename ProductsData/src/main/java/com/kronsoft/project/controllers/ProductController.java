@@ -50,7 +50,7 @@ public class ProductController {
 	}
 	
 	@PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ProductDto updateProduct(@RequestBody ProductDto product) {
+	public ProductDto updateProduct(@RequestBody ProductDto product) throws ProductIdNotExistException {
 		
 		return productService.saveProductDto(product);
 		
